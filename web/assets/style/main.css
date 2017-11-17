@@ -1,0 +1,146 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background: #1c1c1c;
+	color: #ddd;
+	font-family: 'Trebuchet MS', Trebuchet, Verdana;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#header {
+	margin-top: 100px;
+	text-align: center;
+}
+
+	#header h1 {
+		text-align: center;
+		font-weight: normal;
+	}
+	#header #stopButton {
+		font-size: 14px;
+		margin-top: 100px;
+	}
+
+		#header #stopButton span {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			background-color: #aaa;
+			margin-right: 3px;
+			vertical-align: -3; 
+			transition: background-color 100ms, box-shadow 100ms;
+		}
+
+			#header #stopButton:hover span {
+				background-color: #fff;
+				box-shadow: 0 0 10px rgba(255,255,255,0.2);
+			}
+
+#videos {
+	margin-top: 100px;
+	margin-bottom: 200px;
+	text-align: center;
+}
+
+	.video {
+		display: inline-block;
+		margin: 20px 20px;
+		width: 320px;
+		height: 140px;
+		position: relative;
+		opacity: 0.3;
+		transition: opacity 200ms;
+	}
+		.video.active {
+			opacity: 1;
+		}
+		
+		.video .title {
+			position: absolute;
+			left: 0px;
+			right: 0px;
+			top: 128px;
+			text-align: center;
+			font-size: 12px;
+		}
+
+		.video .preview {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			right: 0px;
+			height: 126px;
+			background-size: 320px 12288px;
+			background-position: 0px 0px;
+			background-repeat: no-repeat;
+			image-rendering: pixelated;
+			cursor: pointer;
+		}
+
+@media (max-width: 700px) {
+	#videos {
+		margin-bottom: 40vh;
+	}
+		.video {
+			display: block;
+			margin: 0px auto 40px;
+		}
+}
+
+.button {
+	align-items: flex-start;
+	background: rgba(0,0,0,0.1);
+	border-radius: 5px;
+	border: 1px solid #141414;
+	box-shadow: 0 2px 0px rgba(255,255,255,0.1) inset, 0 0px 2px rgba(0,0,0,0.7);
+	box-sizing: border-box;
+	color: #aaa;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: normal;
+	margin-right: 10px;
+	outline: none;
+	padding: 15px;
+	text-align: center;
+	text-decoration: none;
+	transition: color 100ms;
+}
+
+	.button:hover {
+		color: #ccc;
+	}
+
+	.button:active, .button:focus {
+		box-shadow: 0 0 0 transparent inset;
+	}
+
+.playButton {
+	pointer-events: none;
+}
+.playButton svg {
+	box-sizing: border-box;
+	width: 100%;
+	height: 80%;
+	padding: 10px calc(50% - 50px);
+	position: absolute;
+	top: 10%;
+	left: 0;
+	display: block;
+	opacity: 0;
+	cursor: pointer;
+	transition: opacity 200ms 0ms;
+}
+
+.video.active svg {
+	opacity: 0.2;
+	transition: opacity 200ms 1000ms;
+}
