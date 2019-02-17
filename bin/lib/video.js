@@ -21,7 +21,7 @@ function Video(filename) {
 	me.getThumbnailName = () => thumbnailName;
 	me.getTitle = () => title;
 
-	me.toJSON = () => ({
+	me.toObject = () => ({
 		hasThumbnail: hasThumbnail,
 		thumbnailName: thumbnailName,
 		title: title

@@ -44,8 +44,8 @@ function Playlist() {
 	return {
 		playVideo:name => player.playLoop(titleLookup.get(name).getFilename()),
 		stop:() => player.stop(),
-		getVideos:() => videos,
 		getVideo:name => titleLookup.get(name)
+		getVideos:() => videos.map(v => v.toObject()),
 	}
 
 }
