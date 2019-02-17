@@ -17,7 +17,7 @@ $(function () {
 
 	$.getJSON('/api/getvideos', function (data) {
 		videos = data;
-		console.log(videos);
+
 		var container = $('#videos');
 		container.html(null);
 		videos.forEach(function (video) {
