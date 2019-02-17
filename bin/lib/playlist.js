@@ -26,7 +26,7 @@ function Playlist() {
 				console.warn('unknown file type "'+ext+'"');
 				return false;
 		}
-		var video = new Video(filename, player);
+		var video = new Video(filename);
 
 		if (!video.hasThumbnail()) todos.push(video.generateThumbnail);
 
@@ -42,6 +42,7 @@ function Playlist() {
 	}
 
 	return {
+		playVideo:name => player.playLoop(titleLookup.get(name).getFilename()),
 		stop:() => player.stop(),
 		getVideos:() => videos,
 		getVideo:name => titleLookup.get(name)

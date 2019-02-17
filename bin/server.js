@@ -13,7 +13,7 @@ app.get('/api/getvideos', (req, res) =>
 )
 
 app.get('/api/play/:name', (req, res) => {
-	playlist.getVideo(req.params.name).play()
+	playlist.playVideo(req.params.name);
 	res.status(200).json(true)
 })
 
