@@ -1,5 +1,5 @@
 $(function () {
-	var videos = [], activeVideo, inMobileMode;
+	var videos = [], videoLookup, inMobileMode, lastInteraction = 0;
 
 	var container = $('#videos');
 
@@ -7,6 +7,7 @@ $(function () {
 
 	$(window).resize(checkState);
 	function checkState () {
+		lastInteraction = Date.now();
 		inMobileMode = (window.innerWidth < 700);
 		checkScrollHover();
 	}
@@ -21,14 +22,41 @@ $(function () {
 		container.html(null);
 		videos = data.map(function (entry) { return new Video(entry) });
 
+		videoLookup = {};
+		videos.forEach(function (video) {
+			videoLookup[video.getTitle()] = video;
+		})
+
 		setGlobalHover(false);
 	})
 
+	function updateStatus() {
+		$.getJSON('/api/getstatus', function (data) {
+			setActive(videoLookup[data.video]);
+		})
+	}
+	updateStatus();
+
+	function checkStatus() {
+		if ((Date.now() - lastInteraction) > 60000) updateStatus();
+	}
+	setInterval(checkStatus, 60000);
+
+	function setActive(video) {
+		if (!video) return;
+		var y = video.getCenterY() - window.innerHeight/2;
+		window.scrollTo(0, y);
+		setGlobalHover(video);
+	}
+
 	function setGlobalHover(hoverVideo) {
+		lastInteraction = Date.now();
 		videos.forEach(function (video) { video.setHover(video === hoverVideo) });
 	}
 	
 	function checkScrollHover() {
+		lastInteraction = Date.now();
+
 		if (!inMobileMode) return;
 
 		var y0 = $(window).scrollTop() + window.innerHeight/2;
@@ -71,6 +99,7 @@ $(function () {
 
 		node.on('click', function () {
 			$.getJSON('/api/play/'+data.title, function (response) {
+				lastInteraction = Date.now();
 				console.log(response);
 			})
 		})
@@ -79,7 +108,8 @@ $(function () {
 
 		var me = {
 			setHover: setHover,
-			getCenterY: function () { return preview.offset().top + preview.height()/2; }
+			getCenterY: function () { return preview.offset().top + preview.height()/2 },
+			getTitle: function () { return data.title },
 		}
 
 		function setHover(hover) {
