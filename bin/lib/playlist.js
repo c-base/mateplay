@@ -12,6 +12,7 @@ module.exports = Playlist;
 function Playlist() {
 	var todos = [];
 	var titleLookup = new Map();
+	var filenameLookup = new Map();
 
 	var videos = fs.readdirSync(videoFolder);
 	videos = videos.map(name => {
@@ -31,6 +32,7 @@ function Playlist() {
 		if (!video.hasThumbnail()) todos.push(video.generateThumbnail);
 
 		titleLookup.set(video.getTitle(), video);
+		filenameLookup.set(video.getFilename(), video);
 
 		return video;
 	}).filter(v => v);
@@ -44,8 +46,14 @@ function Playlist() {
 	return {
 		playVideo:name => player.playLoop(titleLookup.get(name).getFilename()),
 		stop:() => player.stop(),
-		getVideo:name => titleLookup.get(name)
 		getVideos:() => videos.map(v => v.toObject()),
+		getVideo:name => titleLookup.get(name),
+		getStatus:() => {
+			var status = player.getStatus();
+			return {
+				video: status.filename && filenameLookup.get(status.filename).getTitle()
+			}
+		}
 	}
 
 }

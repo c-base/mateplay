@@ -20,6 +20,7 @@ function Video(filename) {
 	me.hasThumbnail = () => hasThumbnail;
 	me.getThumbnailName = () => thumbnailName;
 	me.getTitle = () => title;
+	me.getFilename = () => filename;
 
 	me.toObject = () => ({
 		hasThumbnail: hasThumbnail,
