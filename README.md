@@ -1,5 +1,7 @@
 # Mateplay
 
+Main repo is now https://github.com/c-base/mateplay
+
 # How to run the web interface using Docker
 
 First, build the image:
