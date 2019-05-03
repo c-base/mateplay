@@ -11,7 +11,9 @@ services:
     security_opt:
       - 'seccomp:unconfined'
   mateplay:
-    image: mateplay
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     container_name: mateplay
     environment:
       CRAP_HOST: matehost

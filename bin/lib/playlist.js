@@ -12,6 +12,7 @@ module.exports = Playlist;
 function Playlist() {
 	var todos = [];
 	var titleLookup = new Map();
+	var filenameLookup = new Map();
 
 	var videos = fs.readdirSync(videoFolder);
 	videos = videos.map(name => {
@@ -26,11 +27,12 @@ function Playlist() {
 				console.warn('unknown file type "'+ext+'"');
 				return false;
 		}
-		var video = new Video(filename, player);
+		var video = new Video(filename);
 
 		if (!video.hasThumbnail()) todos.push(video.generateThumbnail);
 
 		titleLookup.set(video.getTitle(), video);
+		filenameLookup.set(video.getFilename(), video);
 
 		return video;
 	}).filter(v => v);
@@ -42,9 +44,16 @@ function Playlist() {
 	}
 
 	return {
+		playVideo:name => player.playLoop(titleLookup.get(name).getFilename()),
 		stop:() => player.stop(),
-		getVideos:() => videos,
-		getVideo:name => titleLookup.get(name)
+		getVideos:() => videos.map(v => v.toObject()),
+		getVideo:name => titleLookup.get(name),
+		getStatus:() => {
+			var status = player.getStatus();
+			return {
+				video: status.filename && filenameLookup.get(status.filename).getTitle()
+			}
+		}
 	}
 
 }

@@ -6,12 +6,12 @@ const config = require('../config.js');
 
 module.exports = Player;
 
-
 function Player() {
 
 	const socket = dgram.createSocket('udp4');
 	var playProcess = false;
 	var nextTask = false;
+	var currentFilename = false;
 
 	function stopVideo() {
 		if (!playProcess) return;
@@ -20,6 +20,7 @@ function Player() {
 		playProcess.stdout.removeAllListeners('data');
 		playProcess.kill();
 		playProcess = false;
+		currentFilename = false;
 	}
 
 	function playVideo(filename) {
@@ -35,10 +36,13 @@ function Player() {
 			'-'
 		])
 
+		currentFilename = filename;
+
 		playProcess.stdout.on('data', sendFrame);
 		playProcess.stderr.on('data', chunk => console.error(chunk.toString()));
 		playProcess.on('exit', () => {
 			playProcess = false;
+			currentFilename = false;
 			if (nextTask) nextTask();
 		});
 	}
@@ -53,15 +57,20 @@ function Player() {
 			nextTask = false;
 			stopVideo();
 		},
-		playOnce:(filename) => {
+		playOnce:filename => {
 			console.log('play once "'+filename+'"');
 			nextTask = false;
 			playVideo(filename);
 		},
-		playLoop:(filename) => {
+		playLoop:filename => {
 			console.log('play loop "'+filename+'"');
 			nextTask = () => playVideo(filename);
 			nextTask();
-		}
+		},
+		getStatus:() => {
+			return {
+				filename: currentFilename,
+			}
+		},
 	}
 }

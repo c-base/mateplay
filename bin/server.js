@@ -8,12 +8,17 @@ const playlist = require('./lib/playlist.js')();
 const app = express();
 
 app.use('/', express.static(path.resolve(__dirname, '../web')));
+
 app.get('/api/getvideos', (req, res) =>
-	res.status(200).json(playlist.getVideos().map(v => v.toJSON()))
+	res.status(200).json(playlist.getVideos())
+)
+
+app.get('/api/getstatus', (req, res) =>
+	res.status(200).json(playlist.getStatus())
 )
 
 app.get('/api/play/:name', (req, res) => {
-	playlist.getVideo(req.params.name).play()
+	playlist.playVideo(req.params.name);
 	res.status(200).json(true)
 })
 

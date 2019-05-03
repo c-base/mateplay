@@ -6,7 +6,7 @@ const child_process = require('child_process');
 
 var thumbFolder = path.resolve(__dirname, '../../web/assets/thumbs');
 
-function Video(filename, player) {
+function Video(filename) {
 	var me = this;
 
 	var name = path.basename(filename);
@@ -20,15 +20,13 @@ function Video(filename, player) {
 	me.hasThumbnail = () => hasThumbnail;
 	me.getThumbnailName = () => thumbnailName;
 	me.getTitle = () => title;
+	me.getFilename = () => filename;
 
-	me.toJSON = () => ({
+	me.toObject = () => ({
 		hasThumbnail: hasThumbnail,
 		thumbnailName: thumbnailName,
 		title: title
 	})
-
-	me.play = cb =>
-		player.playLoop(filename)
 	
 	me.generateThumbnail = cb =>
 		getFrameCount(filename, n =>

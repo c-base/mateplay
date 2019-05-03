@@ -60,7 +60,7 @@ body {
 		opacity: 0.3;
 		transition: opacity 200ms;
 	}
-		.video.active {
+		.video.hover {
 			opacity: 1;
 		}
 		
@@ -140,7 +140,7 @@ body {
 	transition: opacity 200ms 0ms;
 }
 
-.video.active svg {
+.video.hover svg {
 	opacity: 0.2;
-	transition: opacity 200ms 1000ms;
+	transition: opacity 200ms 0ms;
 }
