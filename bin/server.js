@@ -3,9 +3,12 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const playlist = require('./lib/playlist.js')();
 
 const app = express();
+
+app.use(cors());
 
 app.use('/', express.static(path.resolve(__dirname, '../web')));
 
